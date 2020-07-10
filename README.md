@@ -89,7 +89,7 @@ Output example:
 151.101.130.133;not resolved;config2.mparticle.com;AD
 </pre>
 
-<h3>2. Processing TLS data</h3>
+<h3>3. Processing TLS data</h3>
 
 TLS data in CSV format extracted directly from PCAP file with mobile app communication is processed by the <tt>tlss2list.pl</tt> parser that reads csv output of the tshark, processes TLS handshakes and computes JA3 and JA3S hashes. It also excludes GREASE values from fingerprinting, see RFC 8701, and renegotiation, see RFC 5746.
 
@@ -126,7 +126,15 @@ JA3 hash;SrcIP;DstIP;OrgName;SNI;JA3S hash;Filename
 1bff249589c418e6881e847dda91068a;10.0.2.15;151.101.66.202;not resolved;sdk.foursquare.com;f30c69a500705210e6c547d244ffe506;../example/output//accuweather-tlss.csv
 d5dcde95b8fa38b5062a128f7eff0737;10.0.2.15;172.217.23.202;not resolved;fonts.googleapis.com;3589acf0c85c607d87bcab1a7e1c7ca3;../example/output//accuweather-tlss.csv
 </pre>
-
+<h4>The list of JA3 fingerprints</h4>
+The final list of JA3 and JA3S hashes with SNI and the name of the input file is created by simple processing of the TLS short list without AD. The output format is as follows:
+<pre>
+JA3 hash;SNI;JA3S hash;filename
+0529055d554c9da011b745452211c296;api.accuweather.com;4e3362a4d6bdc0739bcf48fe32243a69;../example/output//accuweather-tlss.csv
+0529055d554c9da011b745452211c296;api.mapbox.com;0dd6cbec8e8bbaa06efa39ff853972dd;../example/output//accuweather-tlss.csv
+193c522402283ed9e84b8bb38137829f;accuweather.brightspotcdn.com;b63e0ce737c366a59bca6a201d4851ef;../example/output//accuweather-tlss.csv
+193c522402283ed9e84b8bb38137829f;api.accuweather.com;0bcfa5ab48fd49e9b452fbea51bf9ff7;../example/output//accuweather-tlss.csv
+</pre>
 
 <h2>Licence</h2>
 This software can be freely used under BUT open software licence:
