@@ -169,14 +169,14 @@ Parameters:
  
 Example: 
   * <tt>ja3db.pl -f fingerprint.db -r viber-ja3gss.csv  -k viber -hash F -a Viber</tt>
-Output:
+  * Output:
 <pre>
 7 item(s) added to the fingerprint database fingerprint.db
 </pre>
 
 Example: 
   * <tt>ja3db.pl -f fingerprint.db -p</tt>
-Output:
+  * Output:
 <pre>
 JA3 hash;JA3S hash;SNI;App name;Flag
 0529055d554c9da011b745452211c296;4e3362a4d6bdc0739bcf48fe32243a69;api.accuweather.com;Accuweather;F
@@ -190,6 +190,25 @@ JA3 hash;JA3S hash;SNI;App name;Flag
 73f6df94bdc932425a876de76b538388;0af4105ec22f8e4f02610cf2775dec42;main.crws.cz;Na Vlak;F
 </pre>
 
+<h3>5. Identification of unknown traffic with the fingerprint database</h3>
+Having the fingerprint database, we can process the unknown traffic using the steps 2 and 3, i.e., extracting JA3 and JA3S fingerprint from the PCAP file with captured mobile communication. The extracted data can be compared using the fingerprints database as described in step 4. For comparison we can use script <tt>ja3db.pl</tt> with <tt>-c</tt> parameter.
+
+<tt>Format: ja3db.pl -f \<fingerprint.db\> [-c \<ja3gss.csv\>]
+ 
+Parameters:
+* <tt>-c</tt>: compares fingerprints in CSV with the fingerprinting database. The required CSV format is as follows JA3 hash; SNI; JA3S hash; filename.
+
+Example:
+  * <tt>ja3db.pl -f fingerprint.db -c uknown-tls-ja3gss.csv</tt>
+Output:
+<pre>
+</pre>
+
+<h2>References</h2>
+<ul>
+  <li> MATOUŠEK Petr, BURGETOVÁ Ivana and VICTOR Malombe. Mobile Device Fingerprinting. FIT-TR-2020-05, Brno, 2020. Document available at https://www.fit.vut.cz/research/publication/12313/.en.
+  <li> MATOUŠEK Petr. Detekce mobilních zařízení v síťové komunikaci. FIT-TR-2017-08, Brno. Document available at https://www.fit.vut.cz/research/publication/12309/.cs (in Czech only).
+</ul>
 
 <h2>Licence</h2>
 This software can be freely used under BUT open software licence:
