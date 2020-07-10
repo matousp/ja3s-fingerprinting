@@ -1,0 +1,6 @@
+SrcIP;DstIP;OrgName;SNI;AD flag;JA3 hash;JA3S hash
+10.0.2.15;13.32.99.117;not resolved;content.cdn.viber.com;;1bff249589c418e6881e847dda91068a;896415616b22361262d7a961b6325cfd
+10.0.2.15;151.101.112.233;not resolved;venetia.iad.appboy.com;AD;1d9c09ee8595b0a1e34ac5c212c0448a;14fa42c15cd2f1eb37c60916a66d6313
+10.0.2.15;185.151.204.8;not resolved;app.adjust.com;AD;1d9c09ee8595b0a1e34ac5c212c0448a;2f2a753a3e33128abf69c379a932879d
+10.0.2.15;185.151.204.8;not resolved;app.adjust.com;AD;1d9c09ee8595b0a1e34ac5c212c0448a;2f2a753a3e33128abf69c379a932879d
+10.0.2.15;216.58.201.74;not resolved;android.googleapis.com;;ca75d9d90e40897206fa2a08d9100df0;3e5b81f4815a4818df9b54eb4cdc644e

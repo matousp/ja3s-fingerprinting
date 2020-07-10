@@ -1,0 +1,3 @@
+JA3 hash;SrcIP;DstIP;OrgName;SNI;JA3S hash;Filename
+1bff249589c418e6881e847dda91068a;10.0.2.15;13.32.99.117;not resolved;content.cdn.viber.com;896415616b22361262d7a961b6325cfd;../example/output//viber-tlss.csv
+ca75d9d90e40897206fa2a08d9100df0;10.0.2.15;216.58.201.74;not resolved;android.googleapis.com;3e5b81f4815a4818df9b54eb4cdc644e;../example/output//viber-tlss.csv
