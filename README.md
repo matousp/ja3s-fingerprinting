@@ -42,7 +42,7 @@ All scripts were developed and used under FreeBSD system. They can also run unde
      <li> https://gitlab.com/ookangzheng/dbl-oisd-nl/raw/master/dbl.txt
      <li> https://github.com/lightswitch05/hosts/blob/master/ads-and-tracking-extended.txt
      <li> https://easylist.to/easylist/easyprivacy.txt
-   <ul>
+   </ul>
  - DNS domains and TLS entries with AD flag are omitted from fingerprinting because these entries are part of a "noise" created by ad and tracking modules, see the Technical Report in References for explanation. 
  
  The following data are extracted from the PCAP file:
