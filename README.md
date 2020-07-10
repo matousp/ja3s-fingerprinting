@@ -4,7 +4,7 @@
 <h2>Introduction</h2>
 Scripts for JA3 and JA3S fingerprinting
 
-(c) Petr Matousek, 2020
+(c) Petr Matousek, 2020 <br>
 Contact: matousp@fit.vutbr.cz
 
 The scripts were developed under frame of the project Integrated platform for analysis of digital data from security incidents (Tarzan), 2017-2020
