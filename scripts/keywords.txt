@@ -1,0 +1,17 @@
+App Name;keyword
+Boommplay Music;boomplaymusic
+Mobilni Banka;mojebanka.cz
+Mobilni Banka;mobilnibanka.cz
+KB klic;kb.cz
+Nextbike;nextbike.net
+EquaBank CZ;equa.cz
+EquaBank CZ:equamobile.cz
+TitTok;tiktok
+Duolingo;duolingo
+Youtube;youtube
+Google Calendar;calendarsync
+Chrome;vutbr.cz
+WhatsApp;whatsapp
+Gmail:mail.google.com
+Gmail:inbox.google.com
+Facebook:facebook.com

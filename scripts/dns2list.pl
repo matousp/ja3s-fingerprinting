@@ -51,7 +51,6 @@
 
 use strict;
 use Getopt::Long;
-#use Net::Whois::ARIN;
 use Net::Whois::IP qw(whoisip_query);
 
 #
