@@ -50,13 +50,10 @@ All scripts were developed and used under FreeBSD system. They can also run unde
   * From TLS handshakes: src IP, dst IP, src port, dst port, TLS handshake type, TLS handshake version, TLS ciphersuite, TLS extension, TLS handshake SNI, TLS supported groups, TLS EC point format, frame time
   
 The following output files are created for each input file if do not exist:
-  * <name< - extracted HTTP headers in JSON format
-  * dns-txt.csv, dns-resp.csv - extracted DNS data in CSV format
-  * ssl-txt.csv - extracted SSL header data in CSV format
-  * quic-txt.csv - extracted QUIC header data in CSV format
-  * dhcp.csv - extracted DHCP header data
+  * <tt><file-name>-dns.csv</tt> - sorted DNS fields in CSV format extracted from DNS responses 
+  * <tt><file-name>-tlss.csv</tt> - TLS fields in CSV format extracted from TLS handshakes (client hello and server hello packets)
   
-Further, the extract_pcap.sh script calls perl scripts for analyzing raw dat in .json or .csv files. The following scripts are called:
+Further, the <tt> get-ja3s.sh </tt> script calls perl scripts for analyzing raw dat in .json or .csv files. The following scripts are called:
   * get-header.pl - processes HTTP extracted data saved in http-headers.json and http-headers6.json files, see below. The output is saved to user-agent.csv, user-agent6.csv, cookies.csv, cookies6.csv, http-headers-stat.txt, http-headers-stat6.txt, http-headers-all.txt and http-headers-all6.txt
   * format-dns.pl - processes DNS extracted data saved in dns-txt.csv file, see below. The output is written into dns.csv file.
   * format-ssl.pl - processes SSL extracted data saved in ssl-txt.csv file, see below. The output is written into ssl.csv and ssl-hash.csv files. 
