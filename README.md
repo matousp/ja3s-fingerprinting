@@ -126,7 +126,7 @@ JA3 hash;SrcIP;DstIP;OrgName;SNI;JA3S hash;Filename
 1bff249589c418e6881e847dda91068a;10.0.2.15;151.101.66.202;not resolved;sdk.foursquare.com;f30c69a500705210e6c547d244ffe506;../example/output//accuweather-tlss.csv
 d5dcde95b8fa38b5062a128f7eff0737;10.0.2.15;172.217.23.202;not resolved;fonts.googleapis.com;3589acf0c85c607d87bcab1a7e1c7ca3;../example/output//accuweather-tlss.csv
 </pre>
-<h3>Building the fingerprint database for mobile apps</h3>
+<h3>4. Building the fingerprint database for mobile apps</h3>
 The final list of JA3 and JA3S hashes with SNI related to the mobile app communication created by selection of relevant fields from the TLS short list without AD. The output format is as follows:
 <pre>
 JA3 hash;SNI;JA3S hash;filename
@@ -159,6 +159,37 @@ Facebook:facebook.com
 </pre>
 
 For example, by applying keywords on the fingerprint candidates, we select only those fingerprints that are unique and relevant to the app. This is done by the script <tt>ja3db.pl</tt>. 
+
+<tt>Format: ja3db.pl -f \<fingerprint.db\> [-r \<ja3gss.csv\> -k \<keyword\>] -hash \<flag\>] [-p]</tt>
+ 
+Parameters:
+* <tt>-f</tt>: SQL database file with fingerprints. It has fixed format: SQL table FingerprintDB with the following columns: JA3hash (text), JA3Shash (text), SNI (text), AppName (text), Flag (text)
+* <tt>--r \<ja3gss.csv\> -k \<keyword\> -a \<app name\> -h \<flag\></tt> reads new fingerprints from CSV file and insert them into the DB file. The format of CSV file is JA3 hash; SNI; JA3S hash; filename. The keywoerd is used to select entries from CSV file that matches SNI. The application name will be assigned to the fingerprint in order to identify the mobile app with this fingerprint. The flag describes which items of the fingerprint will be used for identification. The possible values are F (full: Ja3 hash, Ja3s hash, SNI), J (JA3 only), JS (Ja3 hash and Ja3S hash only). 
+* <tt>-p</tt> print the entire fingerprints database in CSV format: JA3 hash;JA3S hash;SNI;App name;Flag
+ 
+Example: 
+  * <tt>ja3db.pl -f fingerprint.db -r viber-ja3gss.csv  -k viber -hash F -a Viber</tt>
+Output:
+<pre>
+7 item(s) added to the fingerprint database fingerprint.db
+</pre>
+
+Example: 
+  * <tt>ja3db.pl -f fingerprint.db -p</tt>
+Output:
+<pre>
+JA3 hash;JA3S hash;SNI;App name;Flag
+0529055d554c9da011b745452211c296;4e3362a4d6bdc0739bcf48fe32243a69;api.accuweather.com;Accuweather;F
+193c522402283ed9e84b8bb38137829f;b63e0ce737c366a59bca6a201d4851ef;accuweather.brightspotcdn.com;Accuweather;F
+193c522402283ed9e84b8bb38137829f;0bcfa5ab48fd49e9b452fbea51bf9ff7;api.accuweather.com;Accuweather;F
+193c522402283ed9e84b8bb38137829f;4e3362a4d6bdc0739bcf48fe32243a69;api.accuweather.com;Accuweather;F
+193c522402283ed9e84b8bb38137829f;70745099b394fe3f42264227c098cc98;cms.accuweather.com;Accuweather;F
+193c522402283ed9e84b8bb38137829f;4e3362a4d6bdc0739bcf48fe32243a69;vortex.accuweather.com;Accuweather;F
+1d9c09ee8595b0a1e34ac5c212c0448a;7b76ba926d8e1431f720be59188fa170;api.accuweather.com;Accuweather;F
+1bff249589c418e6881e847dda91068a;896415616b22361262d7a961b6325cfd;content.cdn.viber.com;Viber;F
+73f6df94bdc932425a876de76b538388;0af4105ec22f8e4f02610cf2775dec42;main.crws.cz;Na Vlak;F
+</pre>
+
 
 <h2>Licence</h2>
 This software can be freely used under BUT open software licence:
