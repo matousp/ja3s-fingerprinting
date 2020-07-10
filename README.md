@@ -1,8 +1,10 @@
 # ja3s-fingerprinting
+This folder contains scripts for fingerprinting mobile apps using JA3 and JA3S hashes. Originally, the method was developped by John Althouse and others, see https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967. Here, we apply this method on mobile apps and observe reliability and stability of JA3 and JA3S fingerprints. Details about the methods are described in the technical report, see References below. 
 
+The scripts creates JA3+JA3S fingerprint databased based on the given dataset with typical mobile app communication. For selection of fingerprints diractly related to the app we use Server Name Indication (SNI) string obtained from TLS handshake. Depending on the app, the mobile app fingerprint is composed either by JA3+JA3S hashes only, or as combination of JA3+SNI or JA3+JA3S+SNI. 
 
 <h2>Introduction</h2>
-Scripts for JA3 and JA3S fingerprinting
+The scripts creates JA3 and JA3S fingerprints of mobile apps extracted from TLS and DNS communication of the app in PCAP format in CSV form. The result can be inserted into SQLite DB and later used for comparison with fingerprints of unknown traffic. 
 
 (c) Petr Matousek, 2020 <br>
 Contact: matousp@fit.vutbr.cz
@@ -21,8 +23,8 @@ All scripts were developed and used under FreeBSD system. For running scripts, t
 * perl, version 5
 * required perl modules: Digest::MD5, Getopt::Long, JSON
 
-<h2>User Guide</h2>
-<h3>1. Extracting metadata from a PCAP file</h3>
+<h2>User and Programming Guide</h2>
+<h3>1. Extracting JA3 and JA3S hashes from a PCAP file</h3>
 
  <tt>Format: extract_pcap.sh \<PCAP\> \<output DIR\></tt>
   
