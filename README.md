@@ -61,7 +61,7 @@ Further, the <tt>get-ja3s.sh</tt> script calls perl scripts for analyzing CSV fi
 
 DNS data in CSV format extracted directly from PCAP file with mobile app communication is processed by the <tt>dns2list.pl</tt> parser that reads CSV raw data, process them and extract interesting values.
 
-<tt>Format: dns2list.pl -f \<CSV_file\> [-short] [-ad] [-whois] </tt>
+<tt>Format: dns2list.pl -f \<CSV_file\> [-short] [-ad] [-whois]</tt>
  
 Parameters:
 * <tt>-short</tt> prints only IPv4/6 + domains on the output
@@ -88,6 +88,45 @@ Output example:
 151.101.130.110;not resolved;mobile-collector.newrelic.com;AD
 151.101.130.133;not resolved;config2.mparticle.com;AD
 </pre>
+
+<h3>2. Processing TLS data</h3>
+
+TLS data in CSV format extracted directly from PCAP file with mobile app communication is processed by the <tt>tlss2list.pl</tt> parser that reads csv output of the tshark, processes TLS handshakes and computes JA3 and JA3S hashes. It also excludes GREASE values from fingerprinting, see RFC 8701, and renegotiation, see RFC 5746.
+
+<tt>Format: tlss2list.pl -f \<CSV_file\> [-dns dns_file] [-list] [-noad]</tt>
+ 
+Parameters:
+* <tt>-dns</tt>: includes dns file with resolved IP addresses and AD flags in the following CSV format: IPv4/IPv6 address;whois orgname; domain name;AD flag. 
+* <tt>-list</tt> prints a simple ouput: IP address + fingerprint + AD flag, only unique entries
+* <tt>-noad</tt> a sorted output without entries with AD flag.
+ 
+Examples: 
+  * <tt>tlss2list.pl -f viber-tlss.csv -dns viber-dns.csv > viber-tls-fullgs.csv</tt>
+  * <tt>tlss2list.pl -f viber-tlss.csv -dns viber-dns.csv -list > viber-tls-listgs.csv</tt>
+  * <tt>tlss2list.pl -f viber-tlss.csv -dns viber-dns.csv -list -noad > viber-tls-noadgs.csv</tt>
+    
+Output example:
+* Full list:
+<pre>
+SrcIP;DstIP;SrcPort;DstPort;OrgName;SNI;Hostname;AD flag;Version;Client CipherSuite;Client Extensions;Client SG;CEC_fmt;JA3hash;Server CipherSuite;Server Extensions;Server SG;SEC_fmt;JA3S hash
+10.0.2.15;104.127.61.74;40474;443;not resolved;sb.scorecardresearch.com;sb.scorecardresearch.com;AD;771;49195-49196-52393-49199-49200-52392-49161-49162-49171-49172-156-157-47-53;0-23-10-11-35-16-5-13;0x0000001d,0x00000017,0x00000018;0;193c522402283ed9e84b8bb38137829f;49200;0-11-35-5-16;;0,1,2;4e3362a4d6bdc0739bcf48fe32243a69
+10.0.2.15;104.127.61.74;40498;443;not resolved;sb.scorecardresearch.com;sb.scorecardresearch.com;AD;771;49195-49196-52393-49199-49200-52392-49161-49162-49171-49172-156-157-47-53;0-23-10-11-35-16-5-13;0x0000001d,0x00000017,0x00000018;0;193c522402283ed9e84b8bb38137829f;49200;16;;;0bcfa5ab48fd49e9b452fbea51bf9ff7
+</pre>
+* Short list:
+<pre>
+SrcIP;DstIP;OrgName;SNI;AD flag;JA3 hash;JA3S hash
+10.0.2.15;104.127.61.74;not resolved;sb.scorecardresearch.com;AD;193c522402283ed9e84b8bb38137829f;4e3362a4d6bdc0739bcf48fe32243a69
+10.0.2.15;104.127.61.74;not resolved;sb.scorecardresearch.com;AD;193c522402283ed9e84b8bb38137829f;0bcfa5ab48fd49e9b452fbea51bf9ff7
+10.0.2.15;104.127.61.74;not resolved;sb.scorecardresearch.com;AD;193c522402283ed9e84b8bb38137829f;4e3362a4d6bdc0739bcf48fe32243a69
+</pre>
+* Short list without AD:
+<pre>
+JA3 hash;SrcIP;DstIP;OrgName;SNI;JA3S hash;Filename
+1bff249589c418e6881e847dda91068a;10.0.2.15;151.101.66.202;not resolved;sdk.foursquare.com;f30c69a500705210e6c547d244ffe506;../example/output//accuweather-tlss.csv
+1bff249589c418e6881e847dda91068a;10.0.2.15;151.101.66.202;not resolved;sdk.foursquare.com;f30c69a500705210e6c547d244ffe506;../example/output//accuweather-tlss.csv
+d5dcde95b8fa38b5062a128f7eff0737;10.0.2.15;172.217.23.202;not resolved;fonts.googleapis.com;3589acf0c85c607d87bcab1a7e1c7ca3;../example/output//accuweather-tlss.csv
+</pre>
+
 
 <h2>Licence</h2>
 This software can be freely used under BUT open software licence:
