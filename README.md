@@ -126,8 +126,8 @@ JA3 hash;SrcIP;DstIP;OrgName;SNI;JA3S hash;Filename
 1bff249589c418e6881e847dda91068a;10.0.2.15;151.101.66.202;not resolved;sdk.foursquare.com;f30c69a500705210e6c547d244ffe506;../example/output//accuweather-tlss.csv
 d5dcde95b8fa38b5062a128f7eff0737;10.0.2.15;172.217.23.202;not resolved;fonts.googleapis.com;3589acf0c85c607d87bcab1a7e1c7ca3;../example/output//accuweather-tlss.csv
 </pre>
-<h4>The list of JA3 fingerprints</h4>
-The final list of JA3 and JA3S hashes with SNI and the name of the input file is created by simple processing of the TLS short list without AD. The output format is as follows:
+<h3>Building the fingerprint database for mobile apps</h3>
+The final list of JA3 and JA3S hashes with SNI related to the mobile app communication created by selection of relevant fields from the TLS short list without AD. The output format is as follows:
 <pre>
 JA3 hash;SNI;JA3S hash;filename
 0529055d554c9da011b745452211c296;api.accuweather.com;4e3362a4d6bdc0739bcf48fe32243a69;../example/output//accuweather-tlss.csv
@@ -135,6 +135,30 @@ JA3 hash;SNI;JA3S hash;filename
 193c522402283ed9e84b8bb38137829f;accuweather.brightspotcdn.com;b63e0ce737c366a59bca6a201d4851ef;../example/output//accuweather-tlss.csv
 193c522402283ed9e84b8bb38137829f;api.accuweather.com;0bcfa5ab48fd49e9b452fbea51bf9ff7;../example/output//accuweather-tlss.csv
 </pre>
+However, even this list can contains entries that are caused by the "noise", i.e., traffic that is not unique to the mobile app. What we need is to filter the list so that only genuine entries related to the mobile app will become a part of the fingerprint. For this final selection we use SNI filtering based on keywords related to the app. 
+
+Here is an example of keywords for applications that we observed:
+<pre>
+App Name;keyword
+Boommplay Music;boomplaymusic
+Mobilni Banka;mojebanka.cz
+Mobilni Banka;mobilnibanka.cz
+KB klic;kb.cz
+Nextbike;nextbike.net
+EquaBank CZ;equa.cz
+EquaBank CZ:equamobile.cz
+TitTok;tiktok
+Duolingo;duolingo
+Youtube;youtube
+Google Calendar;calendarsync
+Chrome;vutbr.cz
+WhatsApp;whatsapp
+Gmail:mail.google.com
+Gmail:inbox.google.com
+Facebook:facebook.com
+</pre>
+
+For example, by applying keywords on the fingerprint candidates, we select only those fingerprints that are unique and relevant to the app. This is done by the script <tt>ja3db.pl</tt>. 
 
 <h2>Licence</h2>
 This software can be freely used under BUT open software licence:
