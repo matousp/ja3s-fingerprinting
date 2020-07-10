@@ -13,8 +13,8 @@
 # Related Perl scripts
 #
 
-DNS2LIST="dns2list.pl"
-TLSS2LIST="tlss2list.pl"
+DNS2LIST="./dns2list.pl"
+TLSS2LIST="./tlss2list.pl"
 
 TSHARK="/usr/local/bin/tshark"
 
