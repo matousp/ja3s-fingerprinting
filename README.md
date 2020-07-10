@@ -55,7 +55,7 @@ The following output files are created for each input file if they do not exist:
   
 Further, the <tt>get-ja3s.sh</tt> script calls perl scripts for analyzing CSV files. The following scripts are called:
   * dns2list.pl - processes DNS data in CSV format and creates a full list of resolved entries with AD flag (<tt>\<filename\>-dns-full.csv</tt>) and a short list of resolved entries with IP address, hostname and AD flag only (file <tt>\<filename\>-dns-list.csv</tt>). 
-  * tlss2list.pl - processes TLS data in CSV format, computes JA3 and JA3S hashes with excluded GREASE and renegotion values.  The output is a CSV file with JA3 and JA3S fingerprints with added DNS resolution (file <tt>\<filename\>-tls-fullgs.csv</tt>), a short list with SNI, JA3 and JA3s hashes and AD flags (file <tt>\<filename\>-tls-listgs.csv<tt>), a short list without AD entries (file <tt>\<filename\>-tls-noadgs.csv</tt>) and the final CSV file with sorted unique fingerprints without details (file <tt>\<filename\>-tls-ja3gss.csv</tt>). 
+  * tlss2list.pl - processes TLS data in CSV format, computes JA3 and JA3S hashes with excluded GREASE and renegotion values.  The output is a CSV file with JA3 and JA3S fingerprints with added DNS resolution (file <tt>\<filename\>-tls-fullgs.csv</tt>), a short list with SNI, JA3 and JA3s hashes and AD flags (file <tt>\<filename\>-tls-listgs.csv</tt>), a short list without AD entries (file <tt>\<filename\>-tls-noadgs.csv</tt>) and the final CSV file with sorted unique fingerprints without details (file <tt>\<filename\>-tls-ja3gss.csv</tt>). 
   
 <h3>2. Processing DNS data</h3>
 
