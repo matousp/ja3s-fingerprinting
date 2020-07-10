@@ -169,14 +169,16 @@ Parameters:
  
 Example: 
   * <tt>ja3db.pl -f fingerprint.db -r viber-ja3gss.csv  -k viber -hash F -a Viber</tt>
-  * Output:
+
+Output:
 <pre>
 7 item(s) added to the fingerprint database fingerprint.db
 </pre>
 
 Example: 
   * <tt>ja3db.pl -f fingerprint.db -p</tt>
-  * Output:
+
+Output:
 <pre>
 JA3 hash;JA3S hash;SNI;App name;Flag
 0529055d554c9da011b745452211c296;4e3362a4d6bdc0739bcf48fe32243a69;api.accuweather.com;Accuweather;F
@@ -200,6 +202,7 @@ Parameters:
 
 Example:
   * <tt>ja3db.pl -f fingerprint.db -c uknown-tls-ja3gss.csv</tt>
+
 Output:
 <pre>
 </pre>
