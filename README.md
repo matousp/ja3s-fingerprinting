@@ -28,23 +28,29 @@ All scripts were developed and used under FreeBSD system. They can also run unde
 <h2>User and Programming Guide</h2>
 <h3>1. Extracting JA3 and JA3S hashes from a PCAP file</h3>
 
- <tt>Format: extract_pcap.sh \<PCAP\> \<output DIR\></tt>
+<tt>Format: get-ja3s.sh \<PCAP\> [\<output DIR\>]</tt>
+ 
+<tt>Example: get-ja3s.sh ../example/viber.pcapng ../example/output</tt>
   
- <tt>Example: extract_pcap.sh ../example/mobile-test2.pcap ../example/output</tt>
-  
- - The scripts reads a PCAP file and extract selected values from HTTP, DNS, SSL, QUIC, and DHCP traffic using tshark. This data are later processed by specialized scripts, see below. Extracted data of each protocol is saved into a separted file. 
- - New protocols can be added to the analysis by inserting relevant tshark command. 
- - If a protocol is not present in the PCAP file, an empty output file is created.
+ - The script reads a PCAP file with mobile app communication, extracts selected fields from DNS and TLS packets, and creates JA3 and JA3S hashes. 
+ - DNS processing is used for resolution of IP address in TLS handshakes. If DNS data are missing, no resolution is provided. 
+ - For DNS resolution,  DNS responses with A and AAAA requests and responses over IPv4 and IPv6 are extracted
+ - Extracted domain names are labeled with AD flag if a domain name is part of advertisements or tracking servers. A list of these servers is locally stored in <tt>ad-list.txt</tt> file. Such databases is obtained from the following sources:
+   <ul>
+     <li> https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext&_=3
+     <li> https://hosts-file.net/ad_servers.txt
+     <li> https://gitlab.com/ookangzheng/dbl-oisd-nl/raw/master/dbl.txt
+     <li> https://github.com/lightswitch05/hosts/blob/master/ads-and-tracking-extended.txt
+     <li> https://easylist.to/easylist/easyprivacy.txt
+   <ul>
+ - DNS domains and TLS entries with AD flag are omitted from fingerprinting because these entries are part of a "noise" created by ad and tracking modules, see the Technical Report in References for explanation. 
  
  The following data are extracted from the PCAP file:
-  * For HTTP requests over IPv4 and IPv6: src IP, http request line
-  * For DNS requests and responses over IPv4 and IPv6: src IP, dst IP, Query type, Query name, Response
-  * For SSL hello data: src IP, dst IP, dst port, TLS handshake version, TLS ciphersuite, TLS extension, TLS supported groups, TLS EC point format, frame time, TLS server name, x509 certificate (DNS name)
-  * For QUIC traffic: src IP, QUIC tag
-  * For DHCP requests: requested IP address, src MAC address, DHCP hostname, DHCP request list, DHCP vendor class
+  * From DNS responses: srcIP, dstIP, Query type, Query Name, Number of Answer entries, Number of Authority entries, Type of the response and Response name
+  * From TLS handshakes: src IP, dst IP, src port, dst port, TLS handshake type, TLS handshake version, TLS ciphersuite, TLS extension, TLS handshake SNI, TLS supported groups, TLS EC point format, frame time
   
-The following output files are created if do not exist:
-  * http-headers.json, http-headers6.json - extracted HTTP headers in JSON format
+The following output files are created for each input file if do not exist:
+  * <name< - extracted HTTP headers in JSON format
   * dns-txt.csv, dns-resp.csv - extracted DNS data in CSV format
   * ssl-txt.csv - extracted SSL header data in CSV format
   * quic-txt.csv - extracted QUIC header data in CSV format
