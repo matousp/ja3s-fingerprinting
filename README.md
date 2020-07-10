@@ -195,17 +195,40 @@ JA3 hash;JA3S hash;SNI;App name;Flag
 <h3>5. Identification of unknown traffic with the fingerprint database</h3>
 Having the fingerprint database, we can process the unknown traffic using the steps 2 and 3, i.e., extracting JA3 and JA3S fingerprint from the PCAP file with captured mobile communication. The extracted data can be compared using the fingerprints database as described in step 4. For comparison we can use script <tt>ja3db.pl</tt> with <tt>-c</tt> parameter.
 
-<tt>Format: ja3db.pl -f \<fingerprint.db\> [-c \<ja3gss.csv\>]
+<tt>Format: ja3db.pl -f \<fingerprint.db\> [-c \<ja3gss.csv\>]</tt>
  
 Parameters:
 * <tt>-c</tt>: compares fingerprints in CSV with the fingerprinting database. The required CSV format is as follows JA3 hash; SNI; JA3S hash; filename.
 
 Example:
+  * <tt>get-ja3s.sh ../example/unknown.pcapng ../example/output</tt> - extracts JA3 and JA3S hashes from unknown traffic
   * <tt>ja3db.pl -f fingerprint.db -c uknown-tls-ja3gss.csv</tt>
-
 Output:
 <pre>
+0529055d554c9da011b745452211c296;0bcfa5ab48fd49e9b452fbea51bf9ff7;api.accuweather.com;* unknown app
+0529055d554c9da011b745452211c296;4e3362a4d6bdc0739bcf48fe32243a69;api.accuweather.com;Accuweather
+0529055d554c9da011b745452211c296;0dd6cbec8e8bbaa06efa39ff853972dd;api.mapbox.com;* unknown app
+0529055d554c9da011b745452211c296;896415616b22361262d7a961b6325cfd;api.mapbox.com;* unknown app
+0529055d554c9da011b745452211c296;4e3362a4d6bdc0739bcf48fe32243a69;vortex.accuweather.com;* unknown app
+193c522402283ed9e84b8bb38137829f;b63e0ce737c366a59bca6a201d4851ef;accuweather.brightspotcdn.com;Accuweather
+193c522402283ed9e84b8bb38137829f;0bcfa5ab48fd49e9b452fbea51bf9ff7;api.accuweather.com;Accuweather
+193c522402283ed9e84b8bb38137829f;4e3362a4d6bdc0739bcf48fe32243a69;api.accuweather.com;Accuweather
+193c522402283ed9e84b8bb38137829f;70745099b394fe3f42264227c098cc98;cms.accuweather.com;Accuweather
+193c522402283ed9e84b8bb38137829f;3589acf0c85c607d87bcab1a7e1c7ca3;safebrowsing.googleapis.com;* unknown app
+193c522402283ed9e84b8bb38137829f;3589acf0c85c607d87bcab1a7e1c7ca3;sb-ssl.google.com;* unknown app
+193c522402283ed9e84b8bb38137829f;3e22c1e49e52f88fc45c8cbd6b8e1f37;sb-ssl.google.com;* unknown app
+193c522402283ed9e84b8bb38137829f;4e3362a4d6bdc0739bcf48fe32243a69;vortex.accuweather.com;Accuweather
+1bff249589c418e6881e847dda91068a;896415616b22361262d7a961b6325cfd;content.cdn.viber.com;Viber
+1bff249589c418e6881e847dda91068a;f30c69a500705210e6c547d244ffe506;sdk.foursquare.com;* unknown app
+3d9a16cdc1b2a98f6046af1c833054b8;9ab8f8c869ad234d4025e882270a547a;android.clients.google.com;* unknown app
+4e0d4a2b967fa262cd93949879d163fe;3e22c1e49e52f88fc45c8cbd6b8e1f37;geomobileservices-pa.googleapis.com;* unknown app
+73f6df94bdc932425a876de76b538388;0af4105ec22f8e4f02610cf2775dec42;main.crws.cz;Na Vlak
+ca75d9d90e40897206fa2a08d9100df0;3e5b81f4815a4818df9b54eb4cdc644e;android.googleapis.com;* unknown app
+d5dcde95b8fa38b5062a128f7eff0737;3589acf0c85c607d87bcab1a7e1c7ca3;fonts.googleapis.com;* unknown app
+d5dcde95b8fa38b5062a128f7eff0737;3589acf0c85c607d87bcab1a7e1c7ca3;www.gstatic.com;* unknown app
 </pre>
+
+From the listing above we can see which apps have been identified in the unknown traffic using the fingerprint database. Of course, there were also fingerprints not related to the known apps. 
 
 <h2>References</h2>
 <ul>
