@@ -18,7 +18,7 @@ A list of scripts:
   - ja3db.pl - script that reads JA3 and JA3S fingerprints and creates JA3 fingerprint database. It also classifies unknown traffic based on the learnt fingerprints
 
 <h2>Installation</h2>
-All scripts were developed and used under FreeBSD system. For running scripts, the following software is required:
+All scripts were developed and used under FreeBSD system. They can also run under any Linux or MS Windows with the required software. For running scripts, the following software is required:
 <ul>
   <li> tshark, version 3.2
   <li> perl, version 5
