@@ -51,14 +51,12 @@ All scripts were developed and used under FreeBSD system. They can also run unde
   
 The following output files are created for each input file if do not exist:
   * <tt>\<filename\>-dns.csv</tt> - sorted DNS fields in CSV format extracted from DNS responses 
-  * <tt>filename-tlss.csv</tt> - TLS fields in CSV format extracted from TLS handshakes (client hello and server hello packets)
+  * <tt>\<filename\>-tlss.csv</tt> - TLS fields in CSV format extracted from TLS handshakes (client hello and server hello packets)
   
-Further, the <tt>get-ja3s.sh</tt> script calls perl scripts for analyzing raw dat in .json or .csv files. The following scripts are called:
-  * get-header.pl - processes HTTP extracted data saved in http-headers.json and http-headers6.json files, see below. The output is saved to user-agent.csv, user-agent6.csv, cookies.csv, cookies6.csv, http-headers-stat.txt, http-headers-stat6.txt, http-headers-all.txt and http-headers-all6.txt
-  * format-dns.pl - processes DNS extracted data saved in dns-txt.csv file, see below. The output is written into dns.csv file.
-  * format-ssl.pl - processes SSL extracted data saved in ssl-txt.csv file, see below. The output is written into ssl.csv and ssl-hash.csv files. 
-  * format-quic.pl - processes QUIC extracted data saved in quic-txt.csf file, see below. The output is written into quic.csv file. 
-
+Further, the <tt>get-ja3s.sh</tt> script calls perl scripts for analyzing CSV files. The following scripts are called:
+  * dns2list.pl - processes DNS in CSV format and creates a full list of resolved entries with AD flag (<tt>\<filename\>-dns-full.csv</tt>) and a short list of resolved entries with IP address, hostname and AD flag only (file <tt>\<filename\>-dns-list.csv</tt>). 
+  * tlss2list.pl - 
+  
 <h2>Licence</h2>
 This software can be freely used under BUT open software licence:
 <h3>BUT OPEN SOURCE LICENCE</h3>
