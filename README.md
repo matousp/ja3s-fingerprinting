@@ -49,13 +49,13 @@ All scripts were developed and used under FreeBSD system. They can also run unde
   * From DNS responses: srcIP, dstIP, Query type, Query Name, Number of Answer entries, Number of Authority entries, Type of the response and Response name
   * From TLS handshakes: src IP, dst IP, src port, dst port, TLS handshake type, TLS handshake version, TLS ciphersuite, TLS extension, TLS handshake SNI, TLS supported groups, TLS EC point format, frame time
   
-The following output files are created for each input file if do not exist:
+The following output files are created for each input file if they do not exist:
   * <tt>\<filename\>-dns.csv</tt> - sorted DNS fields in CSV format extracted from DNS responses 
-  * <tt>\<filename\>-tlss.csv</tt> - TLS fields in CSV format extracted from TLS handshakes (client hello and server hello packets)
+  * <tt>\<filename\>-tlss.csv</tt> - TLS fields in CSV format extracted from TLS handshakes (client hello and server hello packets).
   
 Further, the <tt>get-ja3s.sh</tt> script calls perl scripts for analyzing CSV files. The following scripts are called:
-  * dns2list.pl - processes DNS in CSV format and creates a full list of resolved entries with AD flag (<tt>\<filename\>-dns-full.csv</tt>) and a short list of resolved entries with IP address, hostname and AD flag only (file <tt>\<filename\>-dns-list.csv</tt>). 
-  * tlss2list.pl - 
+  * dns2list.pl - processes DNS data in CSV format and creates a full list of resolved entries with AD flag (<tt>\<filename\>-dns-full.csv</tt>) and a short list of resolved entries with IP address, hostname and AD flag only (file <tt>\<filename\>-dns-list.csv</tt>). 
+  * tlss2list.pl - processes TLS data in CSV format, computes JA3 and JA3S hashes with excluded GREASE and renegotion values.  The output is a CSV file with JA3 and JA3S fingerprints with added DNS resolution (file <tt>\<filename\>-tls-fullgs.csv</tt>), a short list with SNI, JA3 and JA3s hashes and AD flags (file <tt>\<filename\>-tls-listgs.csv<tt>), a short list without AD entries (file <tt>\<filename\>-tls-noadgs.csv</tt>) and the final CSV file with sorted unique fingerprints without details (file <tt>\<filename\>-tls-ja3gss.csv<tt>). 
   
 <h2>Licence</h2>
 This software can be freely used under BUT open software licence:
