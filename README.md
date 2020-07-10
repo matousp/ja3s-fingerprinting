@@ -19,9 +19,11 @@ A list of scripts:
 
 <h2>Installation</h2>
 All scripts were developed and used under FreeBSD system. For running scripts, the following software is required:
-* tshark, version 3.2
-* perl, version 5
-* required perl modules: Digest::MD5, Getopt::Long, JSON
+<ul>
+  <li> tshark, version 3.2
+  <li> perl, version 5
+  <li> required perl modules: Digest::MD5, Getopt::Long, Net::Whois::IP, DBI
+</ul>
 
 <h2>User and Programming Guide</h2>
 <h3>1. Extracting JA3 and JA3S hashes from a PCAP file</h3>
