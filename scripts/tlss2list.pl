@@ -2,7 +2,7 @@
 
 #
 # tlss2list.pl: a parser that reads csv output of the tshark, processes TLS handshakes and computes JA3 and JA3S hashes
-#              it also excludes GREASE values from fingerprinting, see RFC 8701, and renegotiation, see RFC 5746
+#              it also excludes GREASE values from fingerprinting by default, see RFC 8701, and renegotiation, see RFC 5746
 #
 # format: tlss2list.pl -f input_file [-dns dns_file] [-list] [-noad]
 #
@@ -36,9 +36,10 @@
 # (c) Petr Matousek, Brno University of Technology, matousp@fit.vutbr.cz
 # Created as a part of TARZAN project (2017-2020)
 #
-# Last update: 7/5/2020
-#
 # Changes:
+#   22/2/2024: hex values converted to dec values to be compatible with the standard JA3 fingerprint (as used in Wireshark)
+#              renegotiation and padding extensions not excluded from the extension list for compatibility with the standard JA3
+#
 
 use strict;
 use Getopt::Long;
@@ -61,17 +62,17 @@ sub Main {
     my ($filename,$dnsfile,$FILE,$DNSFILE,$noad);
     my ($srcIP,$dstIP,$srcPort,$dstPort,$type,$version,$cipher_suite,$sni,$supported_groups,$extensions,$ec_format);
     my ($orgName,$AD_flag,$hostname,$type1);
-    my ($row,$key,$entry);
+    my ($row,$key,$entry,$cipher_suite_dec);
     my ($ja3,$ja3s);
     my ($list) = (0);
-    my (@groups, $sg, $i);
+    my (@groups, $sg, $i, @suites);
     my (@GREASE_HEX) = (0x0A0A,0x1A1A,0x2A2A,0x3A3A,0x4A4A,0x5A5A,0x6A6A,0x7A7A,0x8A8A,0x9A9A,0xAAAA,0xBABA,0xCACA,0xDADA,0xEAEA,0xFAFA);
-    my (@GREASE) = (2570,6682,10794,14906,19018,23130,27242,31354,35466,39578,43690,47802,51914,56026,60138,64250,65281);
+    my (@GREASE) = (2570,6682,10794,14906,19018,23130,27242,31354,35466,39578,43690,47802,51914,56026,60138,64250); #,65281);
     my ($padding) = (21);  
     GetOptions("file=s" => \$filename, "list" => \$list, "dns=s" => \$dnsfile, "noad" => \$noad);
     
     if (!$filename){
-	print "Format: $0 -f <file_name> [-dns <dns_file>] [-list] [-noad] [-grease]\n";
+	print "Format: $0 -f <file_name> [-dns <dns_file>] [-list] [-noad]\n";
 	exit 1;
     }
     if (!open ($FILE,$filename)){
@@ -110,20 +111,31 @@ sub Main {
 	    $type = $groups[0];          # the first value is correct
 	    $version = hex($6);
 	    $cipher_suite = $7;
+	    @suites = split /\,/,$cipher_suite;        # convert cipher_suites from hex to decimal format
+	    $cipher_suite_dec = "";
+	    foreach $i (@suites){                   
+		if ($cipher_suite_dec eq ""){
+		    $cipher_suite_dec = hex($i);
+		}
+		else
+		{
+		    $cipher_suite_dec = $cipher_suite_dec."-".hex($i);
+		}
+	    }
 	    $extensions = $8;
 	    $sni = $9;
 	    $supported_groups = $10;
 	    $ec_format = $11;
-	    $cipher_suite =~ s/\,/\-/g;             # substitute separators to form a JA3 fingerprint
+#	    $cipher_suite =~ s/\,/\-/g;             # substitute separators to form a JA3 fingerprint
 	    $extensions =~ s/\,/\-/g;
 	    foreach $i (@GREASE){                   # exclude GREASE values from cipher suit and extensions
-		$cipher_suite =~ s/$i-//g;
+		$cipher_suite_dec =~ s/$i-//g;
 		$extensions =~ s/$i-//g;
-		$cipher_suite =~ s/-$i//g;
+		$cipher_suite_dec =~ s/-$i//g;
 		$extensions =~ s/-$i//g;
 	    }
-	    $extensions =~ s/21-//g;                # exclude padding extension (21), see RFC 7685
-	    $extensions =~ s/-21//g; 
+#	    $extensions =~ s/21-//g;                # exclude padding extension (21), see RFC 7685
+#	    $extensions =~ s/-21//g; 
 	    @groups = split /\,/,$supported_groups; # convert supported groups from hex to dec
 	    $sg="";
 	    foreach $i (@groups){
@@ -145,7 +157,7 @@ sub Main {
 	    $orgName = "";
 	    if ($type == 1){          # Client Hello
 		$key = $srcIP.":".$dstIP.":".$srcPort;  # compute a hash key for %tls_db
-		$ja3 = md5_hex($version.",".$cipher_suite.",".$extensions.",".$sg.",".$ec_format);
+		$ja3 = md5_hex($version.",".$cipher_suite_dec.",".$extensions.",".$sg.",".$ec_format);
 		if ($dnsfile){        # DNS responses are available 
 		    if ($dns_db{$dstIP}){         # Dst IP can be resolved
 			$hostname = $dns_db{$dstIP}[0];
@@ -167,19 +179,19 @@ sub Main {
 		} else {       # full output
 		    if ($noad){
 			if ($AD_flag ne "AD"){
-			    $entry = $ja3.$delim.$srcIP.$delim.$dstIP.$delim.$srcPort.$delim.$dstPort.$delim.$orgName.$delim.$sni.$delim.$hostname.$delim.$version.$delim.$cipher_suite.$delim.$extensions.$delim.$supported_groups.$delim.$ec_format;
+			    $entry = $ja3.$delim.$srcIP.$delim.$dstIP.$delim.$srcPort.$delim.$dstPort.$delim.$orgName.$delim.$sni.$delim.$hostname.$delim.$version.$delim.$cipher_suite_dec.$delim.$extensions.$delim.$supported_groups.$delim.$ec_format;
 			} else {
 			    next;
 			}
 		    } else {
-			$entry = $srcIP.$delim.$dstIP.$delim.$srcPort.$delim.$dstPort.$delim.$orgName.$delim.$sni.$delim.$hostname.$delim.$AD_flag.$delim.$version.$delim.$cipher_suite.$delim.$extensions.$delim.$supported_groups.$delim.$ec_format.$delim.$ja3;
+			$entry = $srcIP.$delim.$dstIP.$delim.$srcPort.$delim.$dstPort.$delim.$orgName.$delim.$sni.$delim.$hostname.$delim.$AD_flag.$delim.$version.$delim.$cipher_suite_dec.$delim.$extensions.$delim.$supported_groups.$delim.$ec_format.$delim.$ja3;
 		    }
 		}
 		# insert a new entry into tls hash array
 		$tls_db{$key} = $entry;    
 	    }
 	    else {                    # Server Hello
-		$ja3s = md5_hex($version.",".$cipher_suite.",".$extensions);
+		$ja3s = md5_hex($version.",".$cipher_suite_dec.",".$extensions);
 		$key = $dstIP.":".$srcIP.":".$dstPort;  # compute a hash key for %tls_db
 		if ($tls_db{$key}){   # if a Client Hello exists in the db
 		    $entry = $tls_db{$key};
@@ -192,9 +204,9 @@ sub Main {
 			}
 		    } else {          # full output
 			if ($noad){
-			    $tls_db{$key} = $entry.$delim.$ja3s.$delim.$cipher_suite.$delim.$extensions.$delim.$supported_groups.$delim.$ec_format;
+			    $tls_db{$key} = $entry.$delim.$ja3s.$delim.$cipher_suite_dec.$delim.$extensions.$delim.$supported_groups.$delim.$ec_format;
 			} else {
-			    $tls_db{$key} = $entry.$delim.$cipher_suite.$delim.$extensions.$delim.$supported_groups.$delim.$ec_format.$delim.$ja3s;
+			    $tls_db{$key} = $entry.$delim.$cipher_suite_dec.$delim.$extensions.$delim.$supported_groups.$delim.$ec_format.$delim.$ja3s;
 			}
 		    }
 		}
